@@ -1,0 +1,196 @@
+@import './variables';
+@import './css-reset';
+
+@mixin flex-center($justify , $direction) {
+    display: flex;
+    align-items: center;
+    justify-content: $justify;
+    flex-direction: $direction;
+}
+
+@mixin wrapper($gradient) {
+    cursor: pointer;
+    background: linear-gradient(0deg, $gradient);
+    border-radius: 100%;
+    width: 200px;
+    height: 200px;
+    padding: 1.5rem;
+    transition: all 0.3s ease; 
+}
+
+@mixin image {
+    background-color: #fff;
+    border-radius: 100%;
+    width: 100%;
+    height: 100%;
+    padding: 2.5rem;
+    object-fit: contain;
+    box-shadow: inset 0 5px 10px 0 #999999;
+    transition: all 0.3s ease;
+}
+
+body {
+    @include flex-center(center, column);
+    font-family: $font-face;
+    background: radial-gradient(circle, $radial-gradient) no-repeat center center fixed;
+    padding: 2rem;
+}
+
+.header {
+    @include flex-center(space-between, row);
+    border: 1px solid $header-outline;
+    border-radius: 10px;
+    color: #fff;
+    padding: 1rem;
+    width: 60dvw;
+    margin-bottom: 4rem;
+
+    .score-box {
+        @include flex-center(center, row);
+        gap: 1rem;
+        background-color: #fff;
+        color: $dark-text;
+        padding: .5rem 1rem;
+        width: 100px;
+        border-radius: 5px;
+
+        .player-score {
+            @include flex-center(center, column)
+        }
+
+        h5 {
+            font-size: 70%;
+            line-height: 0;
+            margin-top: 1rem;
+        }
+
+        .score {
+            font-size: 200%;
+            font-weight: $font-700;
+        }
+    }
+}
+
+.play-field {
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .player-choice {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        background: url(/src/assets/images/bg-triangle.svg) no-repeat center center
+    }
+
+    .paper-wrap {
+        @include flex-center(center, row);
+        @include wrapper($paper-gradient);
+        position: absolute;
+        top: 0;
+
+        img {
+            @include image();
+        }
+    }
+
+    .scissors-wrap {
+        @include flex-center(center, row);
+        @include wrapper($scissors-gradient);
+        position: absolute;
+        right: 0;
+
+        img {
+            @include image();
+        }
+    }
+
+    .rock-wrap {
+        @include flex-center(center, row);
+        @include wrapper($rock-gradient);
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%);
+
+        img {
+            @include image();
+        }
+    }
+}
+
+.rules-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 130px;
+    padding: .5rem;
+    margin: 2rem;
+    border: 2px solid $header-outline;
+    border-radius: 10px;
+    background: transparent;
+    color: #d4d4d4;
+    font-size: 100%;
+    font-weight: $font-600;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    opacity: 0.7;
+
+    &:hover {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+.modal-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    transition: all .2s ease;
+    opacity: 0;
+
+    .modal-container {
+        @include flex-center(center, column);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        z-index: 9999;
+    
+        .modal-header {
+            @include flex-center(space-between, row);
+            width: 100%;
+            color: $dark-text;
+            margin-bottom: 1rem;
+    
+            .modal-close {
+                opacity: 0.5;
+                cursor: pointer;
+                transition: all 0.6s ease;
+
+                &:hover {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    
+        .modal-body {
+            padding: 1rem;
+        }
+    }
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    display: flex;
+}
