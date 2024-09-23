@@ -41,8 +41,8 @@ body {
     border: 1px solid $header-outline;
     border-radius: 10px;
     color: #fff;
+    width: 35dvw;
     padding: 1rem;
-    width: 60dvw;
     margin-bottom: 4rem;
 
     .score-box {
@@ -91,6 +91,7 @@ body {
         @include wrapper($paper-gradient);
         position: absolute;
         top: 0;
+        left: 0;
 
         img {
             @include image();
@@ -101,6 +102,7 @@ body {
         @include flex-center(center, row);
         @include wrapper($scissors-gradient);
         position: absolute;
+        top: 0;
         right: 0;
 
         img {
@@ -118,6 +120,78 @@ body {
 
         img {
             @include image();
+        }
+    }
+}
+
+.play-hands {
+    @include flex-center(space-between, row);
+    color: #fff;
+    width: 50dvw;
+    padding: 1rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .player-hand, .game-reset, .enemy-hand {
+        @include flex-center(center, column);
+        height: 500px;
+        width: 30%;
+    }
+
+    .player-hand, .enemy-hand {
+        position: relative;
+
+        h4 {
+            position: absolute;
+            top: 10%;
+        }
+
+        img {
+            @include image();
+        }
+    }
+
+    .player-hand, .enemy-hand {
+        .paper {
+            scale: 1.2;
+            @include wrapper($paper-gradient);
+        }
+
+        .scissors {
+            scale: 1.2;
+            @include wrapper($scissors-gradient);
+        }
+
+        .rock {
+            scale: 1.2;
+            @include wrapper($rock-gradient);
+        }
+    }
+
+    .enemy-hand {
+        .loading {
+            width: 150px;
+            height: 150px;
+            border-radius: 100%;
+            background-color: hsl(237, 49%, 15%);
+            opacity: 0.4;
+        }
+    }
+
+    .game-reset {
+        h2 {
+            font-size: 200%;
+        }
+        button {
+            width: 75%;
+            font-size: 80%;
+            font-weight: 700;
+            color: red;
+            border-radius: 5px;
+            border: none;
+            padding: .5rem;
         }
     }
 }

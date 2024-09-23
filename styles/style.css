@@ -70,8 +70,8 @@ body {
   border: 1px solid hsl(217, 16%, 45%);
   border-radius: 10px;
   color: #fff;
+  width: 35dvw;
   padding: 1rem;
-  width: 60dvw;
   margin-bottom: 4rem;
 }
 .header .score-box {
@@ -130,6 +130,7 @@ body {
   transition: all 0.3s ease;
   position: absolute;
   top: 0;
+  left: 0;
 }
 .play-field .paper-wrap img {
   background-color: #fff;
@@ -155,6 +156,7 @@ body {
   padding: 1.5rem;
   transition: all 0.3s ease;
   position: absolute;
+  top: 0;
   right: 0;
 }
 .play-field .scissors-wrap img {
@@ -195,6 +197,95 @@ body {
      object-fit: contain;
   box-shadow: inset 0 5px 10px 0 #999999;
   transition: all 0.3s ease;
+}
+
+.play-hands {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  color: #fff;
+  width: 50dvw;
+  padding: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.play-hands .player-hand, .play-hands .game-reset, .play-hands .enemy-hand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 500px;
+  width: 30%;
+}
+.play-hands .player-hand, .play-hands .enemy-hand {
+  position: relative;
+}
+.play-hands .player-hand h4, .play-hands .enemy-hand h4 {
+  position: absolute;
+  top: 10%;
+}
+.play-hands .player-hand img, .play-hands .enemy-hand img {
+  background-color: #fff;
+  border-radius: 100%;
+  width: 100%;
+  height: 100%;
+  padding: 2.5rem;
+  -o-object-fit: contain;
+     object-fit: contain;
+  box-shadow: inset 0 5px 10px 0 #999999;
+  transition: all 0.3s ease;
+}
+.play-hands .player-hand .paper, .play-hands .enemy-hand .paper {
+  scale: 1.2;
+  cursor: pointer;
+  background: linear-gradient(0deg, hsl(230, 89%, 62%), hsl(230, 89%, 65%));
+  border-radius: 100%;
+  width: 200px;
+  height: 200px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+.play-hands .player-hand .scissors, .play-hands .enemy-hand .scissors {
+  scale: 1.2;
+  cursor: pointer;
+  background: linear-gradient(0deg, hsl(39, 89%, 49%), hsl(40, 84%, 53%));
+  border-radius: 100%;
+  width: 200px;
+  height: 200px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+.play-hands .player-hand .rock, .play-hands .enemy-hand .rock {
+  scale: 1.2;
+  cursor: pointer;
+  background: linear-gradient(0deg, hsl(349, 71%, 52%), hsl(349, 70%, 56%));
+  border-radius: 100%;
+  width: 200px;
+  height: 200px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+.play-hands .enemy-hand .loading {
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+  background-color: hsl(237, 49%, 15%);
+  opacity: 0.4;
+}
+.play-hands .game-reset h2 {
+  font-size: 200%;
+}
+.play-hands .game-reset button {
+  width: 75%;
+  font-size: 80%;
+  font-weight: 700;
+  color: red;
+  border-radius: 5px;
+  border: none;
+  padding: 0.5rem;
 }
 
 .rules-btn {

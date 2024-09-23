@@ -11,13 +11,21 @@ import imageRulesBonus from './assets/images/image-rules-bonus.svg'
 import logoBonus from './assets/images/logo-bonus.svg'
 import logo from './assets/images/logo.svg'
 import { useEffect, useState } from 'react'
+import Game from './Game'
 
+const options = [
+  { hand: 'paper', img: iconPaper },
+  { hand: 'scissors', img: iconScissors },
+  { hand: 'rock', img: iconRock },
+]
 
 function App() {
   /** Game States */
   const [score, setScore] = useState(0)
   const [playerHand, setPlayerHand] = useState<String | ''>('')
-  const enemyOptions = ['rock', 'paper', 'scissors']
+  const [enemyHand, setEnemyHand] = useState<String | ''>('')
+  const [winText, setWinText] = useState<String | ''>('')
+  const [isPlaying, setIsPlaying] = useState(false)
 
   // Modal Active State
   const [isActive, setIsActive] = useState(false)   
@@ -34,45 +42,57 @@ function App() {
   }
 
   /** Game Controllers */
+  const resetGame = () => {
+    setPlayerHand('')
+    setEnemyHand('')
+    setWinText('')
+    setIsPlaying(false)
+  }
+
   const playerHandler = (hand: String) => {
     setPlayerHand(hand)
   } 
 
-  const playGame = () => {
-    const enemyAI = Math.floor(Math.random() * 3)
-    const enemyHand = enemyOptions[enemyAI]
-
-    winner(playerHand, enemyHand)
-    setPlayerHand('')
+  const enemyAI = () => {
+    const randomId = Math.floor(Math.random() * 3)
+    return options[randomId].hand
   }
 
-  const winner = (player: String, enemy: String) => {
-    let count = score
-    if (player === enemy) {
-      console.log('Tie' + '\nplayer:' + player + '\nenemy:' + enemy)
-    } else if (player == 'rock') {
-      if (enemy == 'paper') {
-        console.log('Enemy Wins' + '\nplayer:' + player + '\nenemy:' + enemy)
-      } else {
-        setScore((count) => count + 1)
-        console.log('Player Wins' + '\nplayer:' + player + '\nenemy:' + enemy)
-      }
-    } else if (player == 'paper') {
-      if (enemy == 'scissors') {
-        console.log('Enemy Wins' + '\nplayer:' + player + '\nenemy:' + enemy)
-      } else {
-        setScore((count) => count + 1)
-        console.log('Player Wins' + '\nplayer:' + player + '\nenemy:' + enemy)
-      }
-    } else if (player == 'scissors') {
-      if (enemy == 'rock') {
-        console.log('Enemy Wins' + '\nplayer:' + player + '\nenemy:' + enemy)
-      } else {
-        setScore((count) => count + 1)
-        console.log('Player Wins' + '\nplayer:' + player + '\nenemy:' + enemy)
-      }
+  const playGame = () => {
+    const enemy = enemyAI()
+    if (playerHand !== '') {
+      setIsPlaying(true)
+      setEnemyHand(enemy)
+      
+      const timer = setTimeout(() => {
+        winner(playerHand, enemy)
+      }, 500)
+
+      return () => clearTimeout(timer)
     } else {
-      console.log('Game Over')
+      return null
+    }
+  }
+
+  const winner = (player: string | String, enemy: string) => {
+    if (player === enemy) {
+      setWinText('TIE')
+      console.log(`Player TIE: ${player}, Enemy TIE: ${enemy}`)
+    } else if (
+      (player === 'rock' && enemy === 'scissors') ||
+      (player === 'paper' && enemy === 'rock') ||
+      (player === 'scissors' && enemy === 'paper')
+    ) {
+      console.log(`Player WIN: ${player}, Enemy LOSE: ${enemy}`)
+      setWinText('YOU WIN')
+      setScore(score + 1)
+    } else {
+      setWinText('YOU LOSE')
+      setScore(score - 1)
+      if (score === 0) {
+        setScore(0)
+      }
+      console.log(`Player LOSE: ${player}, Enemy WIN: ${enemy}`)
     }
   }
 
@@ -84,28 +104,27 @@ function App() {
     <>
       <div className="header">
         <img className='bg' src={logo} alt="logo" />
-
         <div className="score-box">
           <div className="player-score">
-            <h5>PLAYER</h5>
+            <h5>SCORE</h5>
             <span className="score">{score}</span>
           </div>
         </div>
       </div>
 
-      <div className="play-field">
-        <div className="player-choice">
-          <div className='paper-wrap' onClick={() => playerHandler('paper')}>
-            <img src={iconPaper} alt="paper" />
+      <div className="play-field"> 
+        {!isPlaying && (
+          <div className='player-choice'>
+            {options.map((option) => (
+              <div key={option.hand} className={`${option.hand}-wrap`} onClick={() => playerHandler(option.hand)}>
+                <img src={option.img} alt={option.hand} />
+              </div>
+            ))}
           </div>
-          <div className='scissors-wrap' onClick={() => playerHandler('scissors')}>
-            <img src={iconScissors} alt="scissors" />
-          </div>
-          <div className='rock-wrap' onClick={() => playerHandler('rock')}>
-            <img src={iconRock} alt="rock" />
-          </div>
-        </div>
+        )}
       </div>
+
+      {isPlaying && <Game options={options} playerHand={playerHand.toString()} enemyHand={enemyHand.toString()} winText={winText.toString()} resetGame={resetGame}/>}
 
       <button className="rules-btn" onClick={modalOpen}>RULES</button>
 
