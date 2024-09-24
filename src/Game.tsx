@@ -12,37 +12,50 @@ interface Option {
     playerHand: string;  // Assuming it's a string like 'rock', 'paper', or 'scissors'
     enemyHand: string;
     winText: string;
+    isPlayerWinner: Boolean;
+    isEnemyWinner: Boolean;
     resetGame: Function;
   }
 
-const Game: FC<GameProps> = ({ options, playerHand, enemyHand, winText, resetGame }) => {
+const Game: FC<GameProps> = ({ options, playerHand, enemyHand, winText, isPlayerWinner, isEnemyWinner, resetGame }) => {
     const [showEnemyHand, setShowEnemyHand] = useState(false)
-    const [showWinText, setShowWinText] = useState(false)
     const playerOption = options.find((option: { hand: any }) => option.hand === playerHand)
     const enemyOption = options.find((option: { hand: any }) => option.hand === enemyHand)
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowEnemyHand(true)
-            const winTimer = setTimeout(() => {
-                setShowWinText(true)
-              }, 100)
-        
-              return () => clearTimeout(winTimer)
+            
+            if (isPlayerWinner) {
+                document.querySelector('.winner')?.classList.add('active')
+            }
+
+            if (isEnemyWinner) {
+                document.querySelector('.winner')?.classList.add('active')
+            }
         }, 600)
 
         return () => clearTimeout(timer)
-    }, [enemyHand])
+    }, [enemyHand, isPlayerWinner, isEnemyWinner])
 
     return (
         <div className={`play-hands`}>
             <div className="player-hand">
                 <h4>YOU PICKED</h4>
-                <div className={`${playerOption?.hand}`}>
-                    <img src={playerOption?.img} alt={playerOption?.hand} />
-                </div>
+                {showEnemyHand ? (
+                <>
+                    {isPlayerWinner && (
+                        <div className="winner"></div>
+                    )}
+                    <div className={`${playerOption?.hand}`}>
+                        <img src={playerOption?.img} alt={playerOption?.hand} />
+                    </div>
+                </>
+                ) : (
+                    <div className="loading"></div>
+                )}
             </div>
-            {showWinText && (
+            {showEnemyHand && (
                 <div className="game-reset">
                     <h2>{winText}</h2>
                     <button onClick={() => resetGame()}>PLAY AGAIN</button>
@@ -51,9 +64,14 @@ const Game: FC<GameProps> = ({ options, playerHand, enemyHand, winText, resetGam
             <div className="enemy-hand">
                 <h4>THE HOUSE PICKED</h4>
                 {showEnemyHand ? (
+                <>
+                    {isEnemyWinner && (
+                        <div className="winner"></div>
+                    )}
                     <div className={`${enemyOption?.hand}`}>
                         <img src={enemyOption?.img} alt={enemyOption?.hand} />
                     </div>
+                </>
                 ) : (
                     <div className="loading"></div>
                 )}

@@ -25,6 +25,8 @@ function App() {
   const [playerHand, setPlayerHand] = useState<String | ''>('')
   const [enemyHand, setEnemyHand] = useState<String | ''>('')
   const [winText, setWinText] = useState<String | ''>('')
+  const [isPlayerWinner, setIsPlayerWinner] = useState(false)
+  const [isEnemyWinner, setIsEnemyWinner] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
 
   // Modal Active State
@@ -47,10 +49,16 @@ function App() {
     setEnemyHand('')
     setWinText('')
     setIsPlaying(false)
+    setIsPlayerWinner(false)
+    setIsEnemyWinner(false)
+    document.querySelectorAll('.move-to-hand').forEach(el => {
+      el.classList.remove('move-to-hand')
+    })
   }
 
   const playerHandler = (hand: String) => {
     setPlayerHand(hand)
+    setIsPlaying(true)
   } 
 
   const enemyAI = () => {
@@ -61,12 +69,11 @@ function App() {
   const playGame = () => {
     const enemy = enemyAI()
     if (playerHand !== '') {
-      setIsPlaying(true)
       setEnemyHand(enemy)
       
       const timer = setTimeout(() => {
         winner(playerHand, enemy)
-      }, 500)
+      }, 700)
 
       return () => clearTimeout(timer)
     } else {
@@ -85,20 +92,26 @@ function App() {
     ) {
       console.log(`Player WIN: ${player}, Enemy LOSE: ${enemy}`)
       setWinText('YOU WIN')
+      setIsPlayerWinner(true)
+      setIsEnemyWinner(false)
       setScore(score + 1)
     } else {
       setWinText('YOU LOSE')
+      setIsPlayerWinner(false)
+      setIsEnemyWinner(true)
       setScore(score - 1)
       if (score === 0) {
         setScore(0)
       }
-      console.log(`Player LOSE: ${player}, Enemy WIN: ${enemy}`)
+      console.log(`Player LOSE: ${player}, Enemy: ${enemy} WIN: `)
     }
   }
 
   useEffect(() => {
-    playGame()
-  }, [playerHand])
+    if (isPlaying) {
+      playGame()
+    }
+  }, [isPlaying])
 
   return (
     <>
@@ -115,6 +128,7 @@ function App() {
       <div className="play-field"> 
         {!isPlaying && (
           <div className='player-choice'>
+            <img className='bg-triangle' src={bgTriangle} alt="" />
             {options.map((option) => (
               <div key={option.hand} className={`${option.hand}-wrap`} onClick={() => playerHandler(option.hand)}>
                 <img src={option.img} alt={option.hand} />
@@ -122,9 +136,8 @@ function App() {
             ))}
           </div>
         )}
+        {isPlaying && <Game options={options} playerHand={playerHand.toString()} enemyHand={enemyHand.toString()} winText={winText.toString()} isPlayerWinner={isPlayerWinner} isEnemyWinner={isEnemyWinner} resetGame={resetGame}/>}
       </div>
-
-      {isPlaying && <Game options={options} playerHand={playerHand.toString()} enemyHand={enemyHand.toString()} winText={winText.toString()} resetGame={resetGame}/>}
 
       <button className="rules-btn" onClick={modalOpen}>RULES</button>
 
