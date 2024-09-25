@@ -286,7 +286,7 @@ body {
   z-index: -100;
   position: absolute;
   transform: scale(0);
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.5s ease-in-out;
 }
 .play-hands .player-hand .winner.active, .play-hands .enemy-hand .winner.active {
   transform: scale(1);
@@ -300,11 +300,16 @@ body {
 }
 .play-hands .game-reset {
   position: relative;
+  width: 0;
+  transition: width 0.5s ease;
+  overflow: hidden;
 }
 .play-hands .game-reset h2 {
   font-size: 300%;
   position: absolute;
   top: 35%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 .play-hands .game-reset button {
   position: absolute;
@@ -315,9 +320,18 @@ body {
   border-radius: 5px;
   border: none;
   padding: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 .play-hands .game-reset button:hover {
   color: red;
+}
+.play-hands .game-reset.show {
+  width: 300px;
+  overflow: visible;
+}
+.play-hands .game-reset.show h2, .play-hands .game-reset.show button {
+  opacity: 1;
 }
 
 .rules-btn {

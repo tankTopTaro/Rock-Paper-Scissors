@@ -193,9 +193,8 @@ body {
             height: 700px;
             z-index: -100;
             position: absolute;
-
             transform: scale(0);
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.5s ease-in-out;
         }
 
         .winner.active {
@@ -213,11 +212,16 @@ body {
 
     .game-reset {
         position: relative;
+        width: 0;
+        transition: width 0.5s ease;
+        overflow: hidden;
 
         h2 {
             font-size: 300%;
             position: absolute;
             top:35%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
         button {
@@ -229,12 +233,22 @@ body {
             border-radius: 5px;
             border: none;
             padding: .5rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
 
             &:hover {
                 color: red;
             }
         }
+    }
 
+    .game-reset.show {
+        width: 300px;
+        overflow: visible;
+
+        h2, button {
+            opacity: 1;
+        }
     }
 }
 

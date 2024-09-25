@@ -22,21 +22,33 @@ const Game: FC<GameProps> = ({ options, playerHand, enemyHand, winText, isPlayer
     const playerOption = options.find((option: { hand: any }) => option.hand === playerHand)
     const enemyOption = options.find((option: { hand: any }) => option.hand === enemyHand)
 
+    const [animate, setAnimate] = useState(false)
+    
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowEnemyHand(true)
-            
-            if (isPlayerWinner) {
-                document.querySelector('.winner')?.classList.add('active')
-            }
-
-            if (isEnemyWinner) {
-                document.querySelector('.winner')?.classList.add('active')
-            }
-        }, 600)
+        }, 100)
 
         return () => clearTimeout(timer)
-    }, [enemyHand, isPlayerWinner, isEnemyWinner])
+    }, [enemyHand])
+
+    useEffect(() => {
+        if (showEnemyHand) {
+            const timer = setTimeout(() => {
+                setAnimate(true)
+
+                if (isPlayerWinner) {
+                    document.querySelector('.winner')?.classList.add('active')
+                }
+    
+                if (isEnemyWinner) {
+                    document.querySelector('.winner')?.classList.add('active')
+                }
+            }, 300)
+
+            return () => clearTimeout(timer)
+        }
+    }, [showEnemyHand, isPlayerWinner, isEnemyWinner])
 
     return (
         <div className={`play-hands`}>
@@ -56,7 +68,7 @@ const Game: FC<GameProps> = ({ options, playerHand, enemyHand, winText, isPlayer
                 )}
             </div>
             {showEnemyHand && (
-                <div className="game-reset">
+                <div className={`game-reset ${animate ? 'show' : ''}`}>
                     <h2>{winText}</h2>
                     <button onClick={() => resetGame()}>PLAY AGAIN</button>
                 </div>
