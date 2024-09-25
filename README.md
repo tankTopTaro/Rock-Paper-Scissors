@@ -27,7 +27,7 @@ Users should be able to:
 
 ### Links
 
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Live Site URL: [Rock Paper Scissors](https://rock-paper-scissors-fementor.netlify.app/)
 
 ## My process
 
@@ -45,5 +45,6 @@ Users should be able to:
 
 Mobile Version -> TBA
 Bonus Mode -> TBA
+Data Persistence -> TBA
 
 
